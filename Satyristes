@@ -6,7 +6,7 @@
   ;; Library name
   (name "actuarial")
   ;; Library version
-  (version "1.0.0")
+  (version "0.0.1")
   ;; Files
   (sources
     ((packageDir "src")))
@@ -24,7 +24,7 @@
   ;; Library doc name
   (name "actuarial-doc")
   ;; Library version
-  (version "0.1.0")
+  (version "0.0.1")
   ;; Working directory to build docs
   (workingDirectory "doc")
   ;; Build commands
