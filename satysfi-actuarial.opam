@@ -31,3 +31,4 @@ install: [
    "--prefix" "%{prefix}%"
    "--script" "%{build}%/Satyristes"]
 ]
+
