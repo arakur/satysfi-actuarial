@@ -5,14 +5,16 @@
 
 # インストール
 
-```sh
+準備中
+
+<!-- ```sh
 opam install satysfi-actuarial
 satyrographos install
 ```
 
 ```tex
 @require: actuarial/actuarial
-```
+``` -->
 
 # 使い方
 
