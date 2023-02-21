@@ -1,0 +1,356 @@
+@require: azmath/azmath
+@require: gr
+@require: option
+
+%
+% Actuarial Symbols
+%
+% superscript/subscript resizing
+% using ${<script>_\ss{<subscript>}}
+let ss m =
+  let embedf ctx =
+    % MAGIC NUMBER
+    let subscript-scale = 0.7 in
+    %
+    let ctx0 = set-font-size (get-font-size ctx *' subscript-scale) ctx in
+    let emb = embed-math ctx0 m in
+    %
+    emb in
+  %
+  text-in-math MathOrd embedf
+let-math \ss m = ss m
+%
+% an angle ￣￣|
+%
+let-math \term x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (margin *' .5, height) (width, height) in
+      let path1 = Gr.line (width, height) (width, 0pt -' depth) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+          stroke stroke-width text-color (path1
+            |> shift-path (x, y));
+        ] in
+    let pads = (margin, margin, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+%
+% a roof /￣￣\
+%
+let-math \roof x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let roof-size-scale = 0.25 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let roof-size = fsize *' roof-size-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt, height -' roof-size) (margin, height) in
+      let path1 = Gr.line (margin, height) (width -' margin, height) in
+      let path2 = Gr.line (width -' margin, height) (width, height -' roof-size) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+          stroke stroke-width text-color (path1
+            |> shift-path (x, y));
+          stroke stroke-width text-color (path2
+            |> shift-path (x, y));
+        ] in
+    let pads = (margin, margin, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+%
+let-math \roof-l x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let roof-size-scale = 0.25 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let roof-size = fsize *' roof-size-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt, height -' roof-size) (margin, height) in
+      let path1 = Gr.line (margin, height) (width +' margin *' .5, height) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+          stroke stroke-width text-color (path1
+            |> shift-path (x, y));
+        ] in
+    let pads = (margin, 0pt, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+%
+let-math \roof-r x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let roof-size-scale = 0.25 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let roof-size = fsize *' roof-size-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt -' margin *' .5, height) (width -' margin, height) in
+      let path1 = Gr.line (width -' margin, height) (width, height -' roof-size) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+          stroke stroke-width text-color (path1
+            |> shift-path (x, y));
+        ] in
+    let pads = (0pt, margin, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+%
+% an overline which joins with left and right overlines
+%
+let-math \joint-l x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt, height) (width +' margin, height) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+        ] in
+    let pads = (margin, 0pt, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+let-math \joint-r x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt -' margin, height) (width, height) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+        ] in
+    let pads = (0pt, margin, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+let-math \joint x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt -' margin *' .5, height) (width +' margin *' .5, height) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+        ] in
+    let pads = (0pt, 0pt, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+let-math \overline x =
+  let make ctx =
+    % MAGIC NUMBERS
+    let margin-scale = 0.125 in
+    let stroke-width = 0.5pt in
+    %
+    let text-color = get-text-color ctx in
+    let fsize = get-font-size ctx in
+    let margin = fsize *' margin-scale in
+    let lines (x,y) width height depth =
+      let path0 = Gr.line (0pt, height) (width, height) in
+        [
+          stroke stroke-width text-color (path0
+            |> shift-path (x, y));
+        ] in
+    let pads = (margin, margin, margin, margin) in
+    let ib = read-inline ctx { ${#x} } in
+    %
+    inline-frame-outer pads lines ib in
+  %
+  text-in-math MathInner make
+%
+% right indices which stack vertically on three lines like:
+%
+%   2
+% P xyz
+%    1
+%
+type align =  | Left | Center | Right
+let ac-ind-body triples alignment =
+  % MAGIC NUMBERS
+  let x-advance-scale = 0.125 in
+  let y-advance-scale = 0.125 in
+  let height-tweak = 0pt in
+  let triple-height-tweak = 2.2pt in
+  %
+  let-rec vertical-num-max triples mx = match triples with
+      | [] -> mx
+      | triple :: rest -> let l = List.length triple in
+        if l > mx
+        then
+          vertical-num-max rest l
+        else
+          vertical-num-max rest mx in
+  let height-num-max =
+    (match vertical-num-max triples 0 with
+      | 1 -> 0.
+      | 2 -> 0.
+      | 3 -> 1.
+      | _ -> abort-with-message `too many arguments`) in
+  %
+  let align ctx m =
+    match alignment with
+      | Left -> embed-math ctx m ++ inline-fil
+      | Center -> inline-fil ++ embed-math ctx m ++ inline-fil
+      | Right -> inline-fil ++ embed-math ctx m in
+  let body =
+    text-in-math MathInner (fun ctx -> (let size = get-font-size ctx in
+    let sx = size *' x-advance-scale in
+    let sy = size *' y-advance-scale in
+    let nsx = 0pt -' size *' x-advance-scale in
+    let pads-start = (sx, sx, sy, sy) in
+    let pads = (nsx, sx, sy, sy) in
+    let cells pads triple =
+      match triple with
+        | mid :: [] -> (NormalCell(pads, align ctx ${}), NormalCell(pads, align ctx mid), NormalCell(pads, align ctx ${}))
+        | top :: mid :: [] -> (NormalCell(pads, align ctx top), NormalCell(pads, align ctx mid), NormalCell(pads, align ctx ${}))
+        | top :: mid :: bottom :: [] -> (NormalCell(pads, align ctx top), NormalCell(pads, align ctx mid), NormalCell(pads, align ctx bottom))
+        | _ -> abort-with-message `unexpected` in
+    let-rec cellss-make triples = match triples with
+        | [] -> ([], [], [])
+        | triple :: rest -> (match (cells pads triple, cellss-make rest) with
+          | ((t,m,b), (tops, mids, bots)) -> (t :: tops, m :: mids, b :: bots)) in
+    let cellss-make-start triples =
+      match triples with
+        | [] -> ([], [], [])
+        | triple :: rest -> (match (cells pads-start triple, cellss-make rest) with
+          | ((t,m,b), (tops, mids, bots)) -> (t :: tops, m :: mids, b :: bots)) in
+    let cellss-made = cellss-make-start triples in
+    let cellss =
+      cellss-made
+        |> (fun (tops, mids, bots) -> [
+        tops;
+        mids;
+        bots;
+      ]) in
+    let last-cellss =
+      cellss-made
+        |> (fun (tops, mids, bots) -> [bots;]) in
+    % no ruled lines
+    let grf = fun _ _ -> [] in
+    let ib = tabular cellss grf in
+    let ib-last = tabular last-cellss grf in
+    let (_, height-last, _) = get-natural-metrics ib-last in
+    let hgtaxis = get-axis-height ctx in
+    let rising = hgtaxis -' size -' height-tweak -' (height-last -' triple-height-tweak) *' height-num-max in raise-inline rising ib)) in
+  %
+  ss body
+let-math \ac-ind triples = ac-ind-body triples Center
+let-math \ac-ind-l triples = ac-ind-body triples Right
+let-math \ac-ind-n triples t =
+  let triples =
+    List.append triples [
+      [${:};];
+      [
+        ${\term{#t}};
+      ];
+    ] in ac-ind-body triples Center
+let-math \ac-ind-ni triples t =
+  let triples =
+    List.append triples [
+      [${:};];
+      [
+        ${1};
+        ${\term{#t}};
+      ];
+    ] in ac-ind-body triples Center
+let-math \ac-sub subs =
+  let triples = List.map (fun x -> [x;]) subs in ac-ind-body triples Center
+let-math \ac-sub-l subs =
+  let triples = List.map (fun x -> [x;]) subs in ac-ind-body triples Right
+let-math \ac-sub-n subs t =
+  let triples =
+    List.append (subs
+      |> List.map (fun x -> [x;])) [
+      [${:};];
+      [
+        ${\term{#t}};
+      ];
+    ] in ac-ind-body triples Center
+let itop m = [${1};m;]
+let ibot m = [${};m;${1};]
+let iitop m = [${2};m;]
+let iibot m = [${};m;${2};]
+let iiitop m = [${3};m;]
+let iiibot m = [${};m;${3};]
+%
+let-math \emp = ${}
+%
+% a character with o above `̊e'
+%
+let-math \o m =
+  let acc = `̊ ` in
+  let accent = math-char MathOrd acc in ${#m #accent}
+%
+% notations
+% TODO: add more
+%
+let-math \lx x = ${ℓ \ac-sub![${#x}]}
+let-math \dx x = ${d \ac-sub![${#x}]}
+let-math \ndx n x = ${\ac-sub-l![${#n}] d \ac-sub![${#x}]}
+let-math \tpx t x = ${\ac-sub-l![${#t}] p \ac-sub![${#x}]}
+let-math \tqx t x = ${\ac-sub-l![${#t}] q \ac-sub![${#x}]}
+let-math \oex x = ${\o{e} \ac-sub-l![${#x}]}
+let-math \oexn x n = ${\o{e} \ac-sub-n![${#x}]{#n}}
+let-math \Enx n x = ${\ac-sub-l![${#n}] E \ac-sub![${#x}]}

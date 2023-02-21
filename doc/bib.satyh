@@ -1,0 +1,57 @@
+@require: bibyfi/bibyfi
+
+% @book{京都大学理学部アクチュアリーサイエンス部門2014アクチュアリーのための生命保険数学入門,
+%   title={アクチュアリーのための生命保険数学入門},
+%   author={京都大学理学部アクチュアリーサイエンス部門},
+%   isbn={9784000062800},
+%   url={https://books.google.co.jp/books?id=d5HKoQEACAAJ},
+%   year={2014},
+%   publisher={岩波書店}
+% }
+let bibs =
+  [
+    (`actuarial-notation`, Article(|
+      author = [
+        `PERRYMAN, F.S.`;
+      ];
+      title = `International Actuarial Notation`;
+      journal = `Proceedings of the Casualty Actuarial Society`;
+      year = `1949`;
+      month = None;
+      volume = Some(`XXXVI`);
+      number = None;
+      pages = (`123`, `131`);
+      key = None;
+      note = None;
+    |));
+    (`actuarial-tex`, WildCard { D. Beauchemin, V. Goulet. actuarialsymbol. 2017-2019. https://ftp.kddilabs.jp/CTAN/macros/latex/contrib/actuarialsymbol });
+    % Manual(|
+    %   title = `actuarialsymbol`;
+    %   author = Some([
+    %     `Beauchemin, David`;
+    %     `Goulet, Vincent`;
+    %   ]);
+    %   organization = None;
+    %   address = Some(`https://ftp.kddilabs.jp/CTAN/macros/latex/contrib/actuarialsymbol/actuarialsymbol.pdf`);
+    %   edition = None;
+    %   month = None;
+    %   year = Some(`2017-2019`);
+    %   note = None;
+    %   key = None;
+    % |));
+    (`actuary-introduction`, Book(|
+      title = `アクチュアリーのための生命保険数学入門`;
+      author = [
+        `京都大学理学部アクチュアリーサイエンス部門`;
+      ];
+      publisher = `岩波書店`;
+      year = `2014`;
+      month = None;
+      volume = None;
+      series = None;
+      address = None;
+      edition = None;
+      note = None;
+      key = None;
+    |));
+  ]

@@ -1,0 +1,206 @@
+@require: stdjareport
+@require: easytable/easytable
+@require: enumitem/enumitem
+@require: code-printer/code-printer
+@require: code-printer/code-syntax
+@require: code-printer/code-theme
+@require: bibyfi/bibyfi
+@require: bibyfi/bibyfi-IEEETran
+@import: bib
+@import: ../src/actuarial
+
+%
+open EasyTableAlias
+let com-config =
+  CodePrinter.make-config CodeSyntax.satysfi CodeTheme.basic-light
+    |> CodePrinter.set-basic-font-size 8pt
+let-inline \com c = { \inline-code ?:(com-config) (c); }
+%
+let-inline ctx \fbox it =
+  let pads = (2pt, 2pt, 2pt, 2pt) in
+  let t = 0.5pt in
+  let deco (x, y) w h d =
+    [
+      stroke t Color.black (Gr.rectangle (x, y -' d) (x +' w, y +' h));
+    ] in inline-frame-inner pads deco (read-inline ctx it)
+in
+
+let bibyfi-theme =
+  BiByFiIEEETran.theme (|
+    name-shrink = true;
+    et-al = true;
+    journal-abbr = [
+      (`European Association for Signal Processing`, `EUSIPCO`);
+    ];
+  |) in
+%
+  document(|
+    title = {
+    \inline-code ?:(CodePrinter.make-config CodeSyntax.satysfi CodeTheme.basic-light
+      |> CodePrinter.set-basic-font-size 16pt) (`actuarial`);: The Actuarial Notation Library
+    };
+    author = { \@arakur65536 };
+    show-title = true;
+    show-toc = true;
+  |)'<
+    +chapter { はじめに } <
+      +p {
+        本ライブラリは保険数理(actuarial)における特有の記法体系であるhalo systemの実装です．
+        実装方針は\cite [
+          `actuarial-tex`;
+        ];を参考にしました．
+        記号法は\cite [
+          `actuarial-notation`;
+          `actuary-introduction`;
+        ];を参照しています．
+      }
+    >
+
+    +chapter { 機能 } <
+      +section { 添字 } <
+        +p { 保険数理では，保険商品の様々な設定を記述するため，halo systemと呼ばれる特殊な添字記法が用いられます．たとえば }
+        +math (${A \ac-ind-n![iitop ${x}; ibot ${y}; [${z}]] {n}});
+        +p {
+          は「年齢${x , y , z}の被保険者${( x ) , ( y ) , ( z )}について，${( y )}が${1}番目に死亡している条件下で第${n}年度末までに${( x )}が${2}番目に死亡した年度末に保険金${1}が生じる生命保険の一時払純保険料」を表します．
+          右上の${2}は一見${A}に対する上付き添字に見えますが，実際は${A}の下付き添字${x}の上に配置されているもので，上付き添字として書こうとすると縦に揃わなくなるため組み込みの添字ではない特別なレイアウトを組む必要があります．
+        }
+        +p {
+          \com (`\ac-ind!`); は上下に記号の付いた下付き添字を出力する最もジェネラルなコマンドです．
+          引数となるリストは要素数が1から3のリストの集まり\com (`: (math list) list`);であり，それぞれの場合に各要素が
+        }
+        +enumerate {
+          * \com (`[中央]`);，
+          * \com (`[上; 中央]`);，
+          * \com (`[上; 中央; 下]`);
+        }
+        +p {
+          の位置に配置されます．
+          たとえば
+        }
+        +code-printer ?:(com-config) (```${A \ac-ind![
+  [${x}];
+  [${y}];
+  [${z}]
+]}```);
+        +p {
+          は ${A \ac-ind![
+          [${x}];
+          [${y}];
+          [${z}]
+      ]}を，
+        }
+        +code-printer ?:(com-config) (```${A \ac-ind![
+  [${x}];
+  [${:}];
+  [${1}; ${\term{n}}]
+]}```);
+        +p {
+          は ${A \ac-ind![
+          [${x}];
+          [${:}];
+          [${1}; ${\term{n}}]
+      ]}を，
+        }
+        +code-printer ?:(com-config) (```${A \ac-ind![
+  [${2}; ${x}];
+  [${}; ${y}; ${1}];
+  [${z}]
+]}```);
+        +p {
+          は ${A \ac-ind![
+          [${2}; ${x}];
+          [${}; ${y}; ${1}];
+          [${z}]
+        ]}をそれぞれ出力します．
+          \com (`A_{xy}^1`);と\com (`A \ac-ind![[${1}; ${x}];[${y}]]`);の出力結果は異なるものになることに注意してください：
+        }
+        +math (${A_{xy}^1 , \  A \ac-ind![[${1}; ${x}];[${y}]] .});
+        +p { 利便性のために，いくつかの典型的な形式を出力するコマンドが用意されています． }
+        +listing {
+          * \com (`\ac-ind-n`);は契約期間を表す${\ac-sub![${:}; ${\term{n}}]}を添字の末尾に追加します：
+           ** \com (`\ac-ind-n![ ${x} ]{n}`); = \com (`\ac-ind![ [${x}]; [${:}]; [${\term{n}] ]`);：${\ac-ind-n![ [${x}] ]{n}}．
+          * \com (`itop ${x}`);はリスト\com (`[${1}; ${x}]`);に等しいです．
+          同様に，\com (`iitop ${x}`);，\com (`iiitop ${x}`);はリスト\com (`[${2}; ${x}]`);および\com (`[${3}; ${x}]`);を作ります．
+          さらに\com (`ibot ${x}`);はリスト\com (`[${}; ${x}; ${1}]`);を意味します．
+          \com (`iibot ${x}`);，\com (`iiibot ${x}`);も同様です．
+          これにより，添字${\ac-ind![iitop${x};ibot${y};[${z}]]}は\com (`\ac-ind![ iitop${x}; ibot${y}; [${z}] ]`);と書くことができます．
+          * \com (`\ac-sub`);は\com (`math list`);を受け取り，上と下の要素のない通常の下付き添字の列を出力します：\com (`\ac-sub![${x}; ${y}; ${z}]`);=${\ac-sub![${x}; ${y}; ${z}]}．
+          \com (`\ac-ind`);の出力は通常の下付き添字と異なる位置になるため，レイアウトの整合性を保つために単なる下付き添字でもこちらを用いることが推奨されます．
+          * \com (`\ac-ind-l`);および\com (`ac-sub-l`);は左側の添字に用いることを想定したコマンドで，全ての内容を右詰めにします：
+        }
+        +code-printer ?:(com-config) (```+math(${
+  \ac-ind-l![
+    [${2}; ${m\|}]
+  ] A \ac-ind-n![
+    itop ${x};
+  ]{n}
+})```);
+        +math (${\ac-ind-l![
+          [${2}; ${m\|}]
+        ] A \ac-ind-n![
+          itop ${x};
+        ]{n}});
+      >
+
+      +section { 添字の装飾 } <
+        +p {
+          添字に対する装飾として，\com (`\term{n}`);${\term{n}}，\com (`\overline{xy}`);${\overline{xy}} ，および\com (`\roof{xy}`);${\roof{xy}}が使用可能です．
+          \com (`\joint`);，\com (`\joint-l`);，\com (`\joint-r`);，\com (`\roof-l`);，\com (`\roof-r`);といったコマンドは隣り合う添字の装飾を連結させるのに用いることができます：
+        }
+        +code-printer ?:(com-config) (```% \roof{xy} が一塊の添字になる
++math(${
+  A \ac-ind-n![
+    itop ${\roof{xy}};
+  ]{n}
+})```);
+        +math (${A \ac-ind-n![
+        itop ${\roof{xy}};
+      ]{n}});
+        +code-printer ?:(com-config) (```% y, z, w それぞれに上下の数字を添加できる
++math (${a \ac-ind![
+  iitop ${\joint-l{y}};
+  [${\joint{z}}];
+  [${\joint-r{w}}];
+  [${\|}];
+  [${x}]
+]});```);
+        +math (${a \ac-ind![
+        iitop ${\joint-l{y}};
+        [${\joint{z}}];
+        [${\joint-r{w}}];
+        [${\|}];
+        [${x}]
+      ]});
+      >
+
+      +section { その他の記号 } <
+        +p { リング付き文字\com (`\o{e}`);${\o{e}}が使用できます． }
+        % +easytable ?:[t;b;m 1;] [l;c;l;] {
+        %   | コマンド | 出力 | 説明
+        %   | \com(`\lx{x}`); | ${\lx{x}} | 生存数
+        %   | \com(`\ndx{n}{x}`); | ${\ndx{n}{x}} | 死亡数
+        %   | \com(`\tpx{t}{x}`); | ${\tpx{t}{x}} | 生存率
+        %   | \com(`\tqx{t}{x}`); | ${\tqx{t}{x}} | 死亡率
+        %   | \com(`\oexn{x}{n}`); | ${\o{e} \ac-sub![ ${x}; ${:}; ${\term{n}} ]} | 完全平均余命
+        %   | \com(`A \ac-sub-n![${x}] {n}`); | ${A \ac-sub-n![${x}] {n}} | 一時払純保険料(養老保険，年末払)
+        %   | \com(`\bar{A} \ac-sub-n![${x}] {n}`); | ${\bar{A} \ac-sub-n![${x}] {n}} | 一時払純保険料(養老保険，即時払)
+        %   | \com(`\Enx{n}{x}`); | ${\Enx{n}{x}} | 貯蓄保険料現価
+        %   | \com(`A \ac-ind-n![ itop ${x} ]{n}`); | ${A \ac-ind-n![ itop ${x} ]{n}} | 一時払純保険料(定期保険，年末払)
+        %   | \com(`A \ac-ind-n1![ [${x}] ]{n}`); | ${A \ac-ind-ni![ [${x}] ]{n}} | 一時払純保険料(純粋生存)
+        %   |
+        % }
+      >
+    >
+
+    +chapter { 今後の実装予定 } <
+      +p { 生命表などの諸記号の略記コマンドを実装予定です．また依然として記法がやや煩雑なため，マクロの導入を検討しています． }
+    >
+
+    +chapter { 参考文献 } <
+      +makebibliography ?:(|
+        sort-references = true;
+        citestyle = CiteAsNumber;
+        name-shrink = true;
+      |) (bibyfi-theme) (bibs);
+    >
+  >

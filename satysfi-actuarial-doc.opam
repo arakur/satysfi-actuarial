@@ -1,0 +1,38 @@
+opam-version: "2.0"
+name: "satysfi-actuarial-doc"
+version: "0.1.0"
+synopsis: "Documentation of satysfi-actuarial"
+description: """
+Documentation of satysfi-actuarial.
+"""
+maintainer: "Arakur arakur65536@gmail.com"
+authors: "Arakur arakur65536@gmail.com"
+license: "MIT" # Choose what you want
+homepage: "https://github.com/<github-username>/satysfi-actuarial"
+dev-repo: "git+https://github.com/<github-username>/satysfi-actuarial.git"
+bug-reports: "https://github.com/<github-username>/satysfi-actuarial/issues"
+depends: [
+  "satysfi" { >= "0.0.6" & < "0.0.7" }
+  "satyrographos" { >= "0.0.2.6" & < "0.0.3" }
+
+  "satysfi-actuarial" {= "%{version}%"}
+
+  "satysfi-dist"
+  "satysfi-base"
+  "satysfi-easytable"
+  "satysfi-enumitem"
+  "satysfi-code-printer"
+  "satysfi-bibyfi"
+]
+build: [
+  ["satyrographos" "opam" "build"
+   "--name" "actuarial-doc"
+   "--prefix" "%{prefix}%"
+   "--script" "%{build}%/Satyristes"]
+]
+install: [
+  ["satyrographos" "opam" "install"
+   "--name" "actuarial-doc"
+   "--prefix" "%{prefix}%"
+   "--script" "%{build}%/Satyristes"]
+]

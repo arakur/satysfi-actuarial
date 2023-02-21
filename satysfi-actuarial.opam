@@ -1,0 +1,33 @@
+opam-version: "2.0"
+name: "satysfi-actuarial"
+version: "0.1.0"
+synopsis: "Halo system implementation for actuarial notations in SATySFi"
+description: """
+Halo system implementation for actuarial notations in SATySFi.
+"""
+maintainer: "Arakur arakur65536@gmail.com"
+authors: "Arakur arakur65536@gmail.com"
+license: "MIT"
+homepage: "https://github.com/<github-username>/satysfi-actuarial"
+dev-repo: "git+https://github.com/<github-username>/satysfi-actuarial.git"
+bug-reports: "https://github.com/<github-username>/satysfi-actuarial/issues"
+depends: [
+  "satysfi" { >= "0.0.6" & < "0.0.7" }
+  "satyrographos" { >= "0.0.2.6" & < "0.0.3" }
+
+  "satysfi-dist"
+  "satysfi-base"
+  "satysfi-azmath"
+]
+build: [
+  ["satyrographos" "opam" "build"
+   "--name" "actuarial"
+   "--prefix" "%{prefix}%"
+   "--script" "%{build}%/Satyristes"]
+]
+install: [
+  ["satyrographos" "opam" "install"
+   "--name" "actuarial"
+   "--prefix" "%{prefix}%"
+   "--script" "%{build}%/Satyristes"]
+]
