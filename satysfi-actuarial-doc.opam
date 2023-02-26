@@ -1,18 +1,18 @@
 opam-version: "2.0"
 name: "satysfi-actuarial-doc"
-version: "0.0.1"
+version: "0.0.2"
 synopsis: "Documentation of satysfi-actuarial"
 description: """
 Documentation of satysfi-actuarial.
 """
-maintainer: "Arakur arakur65536@gmail.com"
-authors: "Arakur arakur65536@gmail.com"
+maintainer: "Arakur <arakur65536@gmail.com>"
+authors: "Arakur <arakur65536@gmail.com>"
 license: "MIT" # Choose what you want
 homepage: "https://github.com/arakur/satysfi-actuarial"
 dev-repo: "git+https://github.com/arakur/satysfi-actuarial.git"
 bug-reports: "https://github.com/arakur/satysfi-actuarial/issues"
 depends: [
-  "satysfi" { >= "0.0.6" & < "0.0.7" }
+  "satysfi" { >= "0.0.6" & < "0.1" }
   "satyrographos" { >= "0.0.2.6" & < "0.0.3" }
 
   "satysfi-actuarial" {= "%{version}%"}
