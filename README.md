@@ -1,9 +1,10 @@
 *version: 0.0.1*
 
-保険数理における halo system (添字記法)の SATySFi 実装です.
-仕様は安定していないため, 今後大きく変更される可能性があります.
+An implementation of the halo system for actuarial in SATySFi.
 
-# インストール
+保険数理における halo system (添字記法)の SATySFi 実装です.
+
+# Installation
 
 ```sh
 opam install satysfi-actuarial
@@ -14,7 +15,7 @@ satyrographos install
 @require: actuarial/actuarial
 ```
 
-# 使い方
+# Usage
 
 ```tex
 +math(${
@@ -22,13 +23,15 @@ satyrographos install
 });
 ```
 
+For more details, see [doc/manual.pdf](doc/manual.pdf).
+
 詳細については [doc/manual.pdf](doc/manual.pdf) を参照してください.
 
 # TODO
 
-- [ ] コマンドの充実
-- [ ] マクロ記法の導入
+- [ ] Enhance commands / コマンドの充実
+- [ ] Adopt macro notation / マクロ記法の導入
 
-# ライセンス
+# License
 
 **MIT**
