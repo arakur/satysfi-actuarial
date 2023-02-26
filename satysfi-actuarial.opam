@@ -17,7 +17,6 @@ depends: [
 
   "satysfi-dist"
   "satysfi-base"
-  "satysfi-azmath"
 ]
 build: [
   ["satyrographos" "opam" "build"

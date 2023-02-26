@@ -1,4 +1,3 @@
-@require: azmath/azmath
 @require: gr
 @require: option
 
@@ -79,6 +78,8 @@ let-math \roof x =
   %
   text-in-math MathInner make
 %
+% a piece /￣￣ of a roof at the leftmost
+%
 let-math \roof-l x =
   let make ctx =
     % MAGIC NUMBERS
@@ -105,6 +106,8 @@ let-math \roof-l x =
     inline-frame-outer pads lines ib in
   %
   text-in-math MathInner make
+%
+% a piece ￣￣\ of a roof at the rightmost
 %
 let-math \roof-r x =
   let make ctx =
@@ -198,6 +201,9 @@ let-math \joint x =
     inline-frame-outer pads lines ib in
   %
   text-in-math MathInner make
+%
+% an overline
+%
 let-math \overline x =
   let make ctx =
     % MAGIC NUMBERS
@@ -296,8 +302,18 @@ let ac-ind-body triples alignment =
     let rising = hgtaxis -' size -' height-tweak -' (height-last -' triple-height-tweak) *' height-num-max in raise-inline rising ib)) in
   %
   ss body
+%
+% actuarial indices
+%
 let-math \ac-ind triples = ac-ind-body triples Center
+%
+% actuarial indices at the left
+%
 let-math \ac-ind-l triples = ac-ind-body triples Right
+%
+%                         __
+% actuarial indices with :n|
+%
 let-math \ac-ind-n triples t =
   let triples =
     List.append triples [
@@ -306,6 +322,11 @@ let-math \ac-ind-n triples t =
         ${\term{#t}};
       ];
     ] in ac-ind-body triples Center
+%
+%                         1
+%                         __
+% actuarial indices with :n|
+%
 let-math \ac-ind-ni triples t =
   let triples =
     List.append triples [
@@ -315,10 +336,20 @@ let-math \ac-ind-ni triples t =
         ${\term{#t}};
       ];
     ] in ac-ind-body triples Center
+%
+% simple indices
+%
 let-math \ac-sub subs =
   let triples = List.map (fun x -> [x;]) subs in ac-ind-body triples Center
+%
+% simple indices at the left
+%
 let-math \ac-sub-l subs =
   let triples = List.map (fun x -> [x;]) subs in ac-ind-body triples Right
+%
+%                      __
+% simple indices with :n|
+%
 let-math \ac-sub-n subs t =
   let triples =
     List.append (subs
@@ -328,14 +359,15 @@ let-math \ac-sub-n subs t =
         ${\term{#t}};
       ];
     ] in ac-ind-body triples Center
+%
+% synonyms of a list representing a index with a number 1-3 at the top or bottom
+%
 let itop m = [${1};m;]
 let ibot m = [${};m;${1};]
 let iitop m = [${2};m;]
 let iibot m = [${};m;${2};]
 let iiitop m = [${3};m;]
 let iiibot m = [${};m;${3};]
-%
-let-math \emp = ${}
 %
 % a character with o above `̊e'
 %

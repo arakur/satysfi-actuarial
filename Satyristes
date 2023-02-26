@@ -16,7 +16,6 @@
   (dependencies
     ((dist ()) ; Standard library
      (base ()) ; Base library
-     (azmath ()) ; Math library
     )))
 
 ;; Library doc declaration
